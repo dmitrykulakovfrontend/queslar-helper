@@ -1,26 +1,11 @@
 import express from "express";
 
-import fetchData from "../../utils/fetchData";
-import fs from "fs/promises";
-import path from "path";
+import fetchAPI from "../utils/fetchAPI";
+import { PlayerModel } from "../db/models/apiKeys";
+import { ApiData } from "../types/api";
+import { AxiosError } from "axios";
+
 const router = express.Router();
-
-const filePathToPlayers = path.join(__dirname, "../../players.json");
-
-export async function readPlayers() {
-  let rawData = "";
-  try {
-    rawData = await fs.readFile(filePathToPlayers, "utf-8");
-  } catch (error) {
-    if (error instanceof Error && "code" in error) {
-      if (error.code === "ENOENT") {
-        await fs.writeFile(filePathToPlayers, "[]");
-        rawData = "[]";
-      }
-    }
-  }
-  return JSON.parse(rawData);
-}
 
 router.get("/full/:api", async (req, res) => {
   const { api } = req.params;
@@ -28,7 +13,7 @@ router.get("/full/:api", async (req, res) => {
     res.status(400).json({ error: "No API provided" });
     return;
   }
-  const data = await fetchData(api);
+  const data = await fetchAPI(`/player/full/${api}`);
   res.json(data);
 });
 
@@ -38,15 +23,28 @@ router.post("/:api", async (req, res) => {
     res.status(400).json({ error: "No API provided" });
     return;
   }
-  const players = await readPlayers();
-  players.push(api);
-  await fs.writeFile(filePathToPlayers, JSON.stringify(players));
-  res.json(true);
-});
-
-router.get("/", async (req, res) => {
-  const players = await readPlayers();
-  res.json(players);
+  try {
+    console.log("Fetching new user data...");
+    const data = await fetchAPI<ApiData>(`/player/full/${api}`);
+    const username = data.player.username;
+    console.log(`Fetched data for ${username} successfully`);
+    console.log(`Saving ${username} into database...`);
+    let player = await PlayerModel.findOneAndUpdate(
+      { api, username },
+      { ...data, username, api },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+    await player.save();
+    console.log(`${username} saved successfully`);
+    res.json(true);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.response?.data);
+    } else {
+      console.log(error);
+    }
+    res.status(400).json({ error });
+  }
 });
 
 export default router;
