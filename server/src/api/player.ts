@@ -1,6 +1,6 @@
 import express from "express";
 
-import fetchData from "../../../utils/fetchData";
+import fetchData from "../../utils/fetchData";
 import fs from "fs/promises";
 import path from "path";
 const router = express.Router();
