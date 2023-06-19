@@ -7,6 +7,21 @@ const router = express.Router();
 
 const filePathToPlayers = path.join(__dirname, "../../players.json");
 
+export async function readPlayers() {
+  let rawData = "";
+  try {
+    rawData = await fs.readFile(filePathToPlayers, "utf-8");
+  } catch (error) {
+    if (error instanceof Error && "code" in error) {
+      if (error.code === "ENOENT") {
+        await fs.writeFile(filePathToPlayers, "[]");
+        rawData = "[]";
+      }
+    }
+  }
+  return JSON.parse(rawData);
+}
+
 router.get("/full/:api", async (req, res) => {
   const { api } = req.params;
   if (!api) {
@@ -23,16 +38,14 @@ router.post("/:api", async (req, res) => {
     res.status(400).json({ error: "No API provided" });
     return;
   }
-  const rawData = await fs.readFile(filePathToPlayers, "utf-8");
-  const players = JSON.parse(rawData);
+  const players = await readPlayers();
   players.push(api);
   await fs.writeFile(filePathToPlayers, JSON.stringify(players));
   res.json(true);
 });
 
-router.get("/all", async (req, res) => {
-  const rawData = await fs.readFile(filePathToPlayers, "utf-8");
-  const players = JSON.parse(rawData);
+router.get("/", async (req, res) => {
+  const players = await readPlayers();
   res.json(players);
 });
 

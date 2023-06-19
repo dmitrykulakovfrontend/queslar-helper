@@ -1,7 +1,7 @@
 import express from "express";
 
 import MessageResponse from "../interfaces/MessageResponse";
-import player from "./player";
+import players from "./players";
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ router.get<{}, MessageResponse>("/", (req, res) => {
   });
 });
 
-router.use("/player", player);
+router.use("/players", players);
 
 export default router;
 
