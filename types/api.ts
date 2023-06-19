@@ -1,4 +1,4 @@
-export interface ApiData {
+export type ApiData = {
   player: ApiDataPlayer;
   currency: { [key: string]: number };
   house: House;
@@ -22,7 +22,7 @@ export interface ApiData {
   fighterCaveTools: { [key: string]: number };
   fighterCaveStats: FighterCaveStats;
   fighterCaveSettings: FighterCaveSettings;
-  houseQueue: HouseQueue[];
+  houseQueue: any[];
   catacombBanner: { [key: string]: number };
   catacombCharacter: CatacombCharacter;
   catacombGuardian: CatacombGuardian[];
@@ -36,9 +36,9 @@ export interface ApiData {
   partyData: PartyData;
   partyPvPData: PartyPvPData;
   returnTypeData: ReturnTypeData;
-}
+};
 
-export interface PurpleActions {
+export type PurpleActions = {
   id: number;
   player_id: number;
   actions_remaining: number;
@@ -55,9 +55,9 @@ export interface PurpleActions {
   last_boosted_income: number;
   actions_bought: number;
   actions_bought_tier: number;
-}
+};
 
-export interface CatacombCharacter {
+export type CatacombCharacter = {
   id: number;
   player_id: number;
   health: number;
@@ -69,9 +69,9 @@ export interface CatacombCharacter {
   water_damage: number;
   thunder_damage: number;
   fire_damage: number;
-}
+};
 
-export interface CatacombGeneral {
+export type CatacombGeneral = {
   id: number;
   player_id: number;
   shop_upgrades: number;
@@ -81,9 +81,10 @@ export interface CatacombGeneral {
   max_guardian: number;
   max_tier: number;
   banner_resets: number;
-}
+  free_refreshes: number;
+};
 
-export interface CatacombGuardian {
+export type CatacombGuardian = {
   id: number;
   player_id: number;
   guardian_id: number;
@@ -93,9 +94,9 @@ export interface CatacombGuardian {
   dodge_upgrades: number;
   crit_damage_upgrades: number;
   crit_chance_upgrades: number;
-}
+};
 
-export interface CatacombHistory {
+export type CatacombHistory = {
   id: number;
   income: number;
   start_time: string;
@@ -107,10 +108,17 @@ export interface CatacombHistory {
   total_monsters: number;
   hp_remaining: string;
   emblem_gain: number;
-  emblem_type: string;
-}
+  emblem_type: EmblemType;
+};
 
-export interface CatacombTomeInventory {
+export type EmblemType =
+  | "orange_emblem"
+  | "green_emblem"
+  | "blue_emblem"
+  | "red_emblem"
+  | "yellow_emblem";
+
+export type CatacombTomeInventory = {
   id: number;
   player_id: number;
   name: string;
@@ -132,9 +140,9 @@ export interface CatacombTomeInventory {
   multi_mob: number;
   lifesteal: number;
   gear_set: number;
-}
+};
 
-export interface EquipmentEquipped {
+export type EquipmentEquipped = {
   id: number;
   player_id: number;
   action_type: string;
@@ -192,9 +200,9 @@ export interface EquipmentEquipped {
   gem_splinter_type: string;
   gem_splinter_time: string;
   type: number;
-}
+};
 
-export interface EquipmentSlots {
+export type EquipmentSlots = {
   id: number;
   player_id: number;
   left_hand_level: number;
@@ -204,9 +212,9 @@ export interface EquipmentSlots {
   hands_level: number;
   legs_level: number;
   feet_level: number;
-}
+};
 
-export interface FighterCaveSettings {
+export type FighterCaveSettings = {
   id: number;
   player_id: number;
   deeper_limit: number;
@@ -217,9 +225,9 @@ export interface FighterCaveSettings {
   closest_tile_depth_type: string;
   rush_depth_max: number;
   skip_boss: number;
-}
+};
 
-export interface FighterCaveStats {
+export type FighterCaveStats = {
   id: number;
   player_id: number;
   cave_strength: number;
@@ -230,14 +238,14 @@ export interface FighterCaveStats {
   cave_monster_health: number;
   cave_monster_agility: number;
   cave_monster_dexterity: number;
-}
+};
 
-export interface FighterPreset {
+export type FighterPreset = {
   assignment: string;
   fighters: Fighter[];
-}
+};
 
-export interface Fighter {
+export type Fighter = {
   id: number;
   fighter_id: number;
   player_id: number;
@@ -291,9 +299,9 @@ export interface Fighter {
   trashed: number | null;
   trashed_time: null | string;
   post_catacomb: number | null;
-}
+};
 
-export interface House {
+export type House = {
   id: number;
   player_id: number;
   chairs: number;
@@ -319,27 +327,18 @@ export interface House {
   automation: number;
   token_percent: number;
   is_upgrade: number;
-}
+};
 
-export interface HouseQueue {
-  id: number;
-  player_id: number;
-  building: string;
-  room: string;
-  used_credits: number;
-  level: number;
-  is_upgrade: number;
-}
-
-export interface Kingdom {
+export type Kingdom = {
   tiles: Tile[];
   overview: Array<OverviewElement[]>;
   explorationBoosts: ExplorationBoosts;
   activeExploration: ActiveExploration;
   gods: { [key: string]: number };
-}
+  mapMisc: MapMisc;
+};
 
-export interface ActiveExploration {
+export type ActiveExploration = {
   id: number;
   kingdom_id: number;
   name: string;
@@ -350,9 +349,9 @@ export interface ActiveExploration {
   zone_type: string;
   enemies: number;
   exploration_timer: string;
-}
+};
 
-export interface ExplorationBoosts {
+export type ExplorationBoosts = {
   id: number;
   kingdom_id: number;
   level: number;
@@ -364,9 +363,13 @@ export interface ExplorationBoosts {
   pet: number;
   tax: number;
   house: number;
-}
+};
 
-export interface OverviewElement {
+export type MapMisc = {
+  mystery_tile: string;
+};
+
+export type OverviewElement = {
   id?: number;
   owner_id?: number;
   name: string;
@@ -388,9 +391,9 @@ export interface OverviewElement {
   decimals?: number;
   zeroFill?: boolean;
   protocol41?: boolean;
-}
+};
 
-export interface Tile {
+export type Tile = {
   id: number;
   type: string;
   name: string;
@@ -403,9 +406,9 @@ export interface Tile {
   resource_three_value: number | null;
   captured_time: string;
   village_id?: number;
-}
+};
 
-export interface ApiDataOverview {
+export type ApiDataOverview = {
   id: number;
   owner_id: number;
   name: string;
@@ -421,9 +424,9 @@ export interface ApiDataOverview {
   last_quest_reset: string;
   last_quest_reset_player: number;
   ironman: number;
-}
+};
 
-export interface Partner {
+export type Partner = {
   id: number;
   player_id: number;
   action_id: number;
@@ -445,9 +448,9 @@ export interface Partner {
   health: number;
   agility: number;
   dexterity: number;
-}
+};
 
-export interface PartyActionsClass {
+export type PartyActionsClass = {
   id: number;
   player_id: number;
   party_id: number;
@@ -458,40 +461,40 @@ export interface PartyActionsClass {
   highest_monster: number;
   actions_gained_today: number;
   actions_gained_yesterday: number;
-}
+};
 
-export interface PartyData {
+export type PartyData = {
   partyInformation: { [key: string]: PartyInformation };
   partyTotal: Total;
   playerTotal: { [key: string]: Total };
-}
+};
 
-export interface PartyInformation {
+export type PartyInformation = {
   actions: PartyActionsClass;
   player: PartyInformationPlayer;
-}
+};
 
-export interface PartyInformationPlayer {
+export type PartyInformationPlayer = {
   id: number;
   leader: boolean;
   username: string;
-}
+};
 
-export interface Total {
+export type Total = {
   liveBoosts: LiveBoosts;
   liveStats: LiveStats;
-}
+};
 
-export interface LiveBoosts {
+export type LiveBoosts = {
   critChance: number;
   critDamage: number;
   multistrikeChance: number;
   healingChance: number;
   defense: number;
   frenzy: number;
-}
+};
 
-export interface LiveStats {
+export type LiveStats = {
   damage: number;
   defense: number;
   strength: number;
@@ -499,13 +502,13 @@ export interface LiveStats {
   agility: number;
   dexterity: number;
   experience?: number;
-  gold: number;
+  gold?: number;
   stat?: number;
   drop: number;
   pets?: number;
-}
+};
 
-export interface PartyPvPData {
+export type PartyPvPData = {
   gold: number;
   resource: number;
   drop: number;
@@ -514,9 +517,9 @@ export interface PartyPvPData {
   house: number;
   actions: number;
   tax: number;
-}
+};
 
-export interface Pet {
+export type Pet = {
   id: number;
   player_id: number;
   level: number;
@@ -524,8 +527,8 @@ export interface Pet {
   name: string;
   active_food: string;
   efficiency_tier: number;
-  efficiency_lock: number;
-  auto_feed: number;
+  efficiency_lock: boolean;
+  auto_feed: boolean;
   auto_feed_type: string;
   pet_id: number;
   strength: number;
@@ -541,9 +544,9 @@ export interface Pet {
   wood: number;
   food: number;
   stone?: number;
-}
+};
 
-export interface ApiDataPlayer {
+export type ApiDataPlayer = {
   ironman_type: number;
   account_id: number;
   pvp_rank: number;
@@ -569,9 +572,9 @@ export interface ApiDataPlayer {
   qol_destroy_item_rarity: string;
   second_icon_id: number;
   first_icon_id: number;
-}
+};
 
-export interface PlayerFighterData {
+export type PlayerFighterData = {
   id: number;
   player_id: number;
   daily_attacks_used: number;
@@ -581,9 +584,9 @@ export interface PlayerFighterData {
   automation: number;
   automation_attempts_hour: number;
   automation_attempts_limit: number;
-}
+};
 
-export interface PlayerHomesteadData {
+export type PlayerHomesteadData = {
   id: number;
   player_id: number;
   plots: number;
@@ -591,9 +594,9 @@ export interface PlayerHomesteadData {
   farm_level: number;
   logging_level: number;
   fishing_level: number;
-}
+};
 
-export interface PlayerHomesteadDecoration {
+export type PlayerHomesteadDecoration = {
   id: number;
   name: string;
   player_id: number;
@@ -613,18 +616,18 @@ export interface PlayerHomesteadDecoration {
   trashed: number;
   trashed_time: string;
   size_decreases: number;
-}
+};
 
-export interface PlayerPetsData {
+export type PlayerPetsData = {
   id: number;
   player_id: number;
   farm_strength: number;
   farm_health: number;
   farm_agility: number;
   farm_dexterity: number;
-}
+};
 
-export interface PlayerTaxSettings {
+export type PlayerTaxSettings = {
   id?: number;
   player_id?: number;
   experience_tax: number;
@@ -635,23 +638,23 @@ export interface PlayerTaxSettings {
   gold_tax_party: number;
   relics_tax_party: number;
   relics_tax_partner: number;
-}
+};
 
-export interface ReturnTypeData {
+export type ReturnTypeData = {
   type: string;
   playerId: number;
-}
+};
 
-export interface Stats {
+export type Stats = {
   id: number;
   player_id: number;
   strength: number;
   health: number;
   agility: number;
   dexterity: number;
-}
+};
 
-export interface Village {
+export type Village = {
   boosts: { [key: string]: number };
   strengths: { [key: string]: number };
   overview: ApiDataOverview;
@@ -659,9 +662,9 @@ export interface Village {
   tiles: Tile[];
   gods: { [key: string]: number };
   currency: Currency;
-}
+};
 
-export interface Currency {
+export type Currency = {
   id: number;
   village_id: number;
   gold: number;
@@ -672,9 +675,10 @@ export interface Currency {
   relics: number;
   credits: number;
   faith: number;
-}
+};
 
-export interface VillageRank {
+export type VillageRank = {
+  poll: number;
   id: number;
   name: string;
   upgrade_buildings: number;
@@ -690,7 +694,7 @@ export interface VillageRank {
   assign_ranks: number;
   mute: number;
   goals: number;
-  gold_tax: number;
+  gold_tax: boolean;
   gold_tax_value: number;
   resources_tax: number;
   resources_tax_value: number;
@@ -703,8 +707,8 @@ export interface VillageRank {
   map_spying: number;
   edit: number;
   groups: number;
-  gold_tax_party: number;
+  gold_tax_party: boolean;
   experience_tax_party: number;
   relics_tax_party: number;
   relics_tax_partner: number;
-}
+};

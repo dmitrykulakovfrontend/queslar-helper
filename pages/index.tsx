@@ -74,26 +74,26 @@ export default function Home() {
     },
   ];
 
-  const { isLoading, isError, isSuccess, data, refetch } = useQuery(
-    ["data"],
-    fetchData,
-    {
-      refetchOnWindowFocus: false,
-      enabled: false,
-    }
-  );
-  useEffect(() => {
-    console.log({ isLoading, isError, isSuccess, data });
-  }, [isLoading, isError, isSuccess, data]);
+  // const { isLoading, isError, isSuccess, data, refetch } = useQuery(
+  //   ["data"],
+  //   fetchData,
+  //   {
+  //     refetchOnWindowFocus: false,
+  //     enabled: false,
+  //   }
+  // );
+  // useEffect(() => {
+  //   console.log({ isLoading, isError, isSuccess, data });
+  // }, [isLoading, isError, isSuccess, data]);
 
   return (
     <div>
-      <button
+      {/* <button
         className="absolute z-50 flex items-center p-2 text-base font-normal text-gray-900 bg-gray-200 rounded-lg top-1 left-1 hover:bg-gray-100 group"
         onClick={() => refetch()}
       >
         get data
-      </button>
+      </button> */}
       <nav className="fixed z-30 w-full bg-white border-b border-gray-200">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
@@ -187,7 +187,7 @@ export default function Home() {
               </button>
               <div className="items-center hidden lg:flex">
                 <span className="mr-5 text-base font-normal text-gray-500">
-                  Please consider supporting us with a coffee donation ❤️
+                  Please consider support hosting website with a donation ❤️
                 </span>
               </div>
             </div>
