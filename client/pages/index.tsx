@@ -2,32 +2,42 @@ import React, { useEffect, useState } from "react";
 import Input from "../components/Input";
 import { useRouter } from "next/router";
 import { apiUrl } from "../constants";
+import { setCookie } from "cookies-next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 type Props = {};
-//
+
+export const getServerSideProps: GetServerSideProps<{}> = async ({ req }) => {
+  const apiKey = req.cookies.apiKey;
+  return {
+    props: {},
+    redirect: apiKey && { destination: "/dashboard" },
+  };
+  // if (apiKey) {
+  //   return {
+  //     props: {},
+  //     redirect: { destination: "/dashboard" },
+  //   };
+  // }
+  // return {
+  //   props: {},
+  // };
+};
 function Index({}: Props) {
   const [apiKey, setApiKey] = useState("");
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  useEffect(() => {
-    const player = localStorage.getItem("player");
-    if (player) {
-      router.push("/dashboard");
-    }
-  }, [router]);
   async function handleApiKey() {
     try {
       setIsLoading(true);
-      const res = await fetch(`${apiUrl}/players/${apiKey}`, {
-        method: "POST",
-      });
+      const res = await fetch(`/api/${apiKey}`);
       console.log(res);
       if (res.status !== 200) {
         throw new Error(res.statusText);
       }
       setIsLoading(false);
-      localStorage.setItem("player", JSON.stringify({ apiKey }));
+
       router.push("/dashboard");
     } catch (error) {
       console.error(error);
@@ -39,11 +49,10 @@ function Index({}: Props) {
       setApiKey("");
     }
   }
-  console.log({ isError, isLoading });
   return (
     <div className="flex flex-col items-center justify-center min-h-screen gap-8 py-12 bg-gray-50 sm:px-6 lg:px-8">
       <span className="text-2xl font-bold leading-none text-center text-gray-900 sm:text-3xl">
-        Welcome to Roman Empire website!
+        Welcome to Roman Empire!
       </span>
       {}
       {isLoading ? (
