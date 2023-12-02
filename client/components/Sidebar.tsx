@@ -85,7 +85,7 @@ const Sidebar = (props: Props) => {
       aria-label="Sidebar"
     >
       <div
-        className={`fixed top-0 left-64 bottom-0 right-0 z-10 ${
+        className={`fixed top-0 z-10 left-64 bottom-0 pointer-events-none right-0  ${
           menu ? "opacity-50" : "opacity-0"
         } bg-gray-900 lg:hidden transition-opacity`}
       ></div>
