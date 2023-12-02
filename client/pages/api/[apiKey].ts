@@ -25,8 +25,6 @@ export default async function handler(
   const Days14InSeconds = 14 * 24 * 60 * 60;
 
   setCookie("apiKey", apiKey, {
-    httpOnly: true,
-    secure: true,
     maxAge: Days14InSeconds,
     req,
     res,
