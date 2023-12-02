@@ -12,6 +12,10 @@ import { Player } from "types/googleSheet";
 export async function getServerSideProps({}) {
   const auth = await google.auth.getClient({
     scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
+    credentials: {
+      private_key: process.env.GOOGLE_PRIVATE_KEY,
+      client_email: process.env.GOOGLE_CLIENT_EMAIL,
+    },
   });
 
   const sheets = google.sheets({ version: "v4", auth });
