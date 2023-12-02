@@ -36,9 +36,8 @@ function Index({}: Props) {
       if (res.status !== 200) {
         throw new Error(res.statusText);
       }
-      setIsLoading(false);
-
       router.push("/dashboard");
+      setIsLoading(false);
     } catch (error) {
       console.error(error);
       setIsError(true);
