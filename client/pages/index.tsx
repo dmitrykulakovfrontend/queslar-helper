@@ -23,6 +23,7 @@ function Index({}: Props) {
     {
       refetchOnWindowFocus: false,
       enabled: false,
+      cacheTime: 0,
     },
   );
   const router = useRouter();
