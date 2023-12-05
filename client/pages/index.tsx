@@ -11,17 +11,8 @@ export const getServerSideProps: GetServerSideProps<{}> = async ({ req }) => {
   const apiKey = req.cookies.apiKey;
   return {
     props: {},
-    redirect: apiKey && { destination: "/dashboard" },
+    redirect: apiKey && { destination: "/dashboard/general" },
   };
-  // if (apiKey) {
-  //   return {
-  //     props: {},
-  //     redirect: { destination: "/dashboard" },
-  //   };
-  // }
-  // return {
-  //   props: {},
-  // };
 };
 function Index({}: Props) {
   const [apiKey, setApiKey] = useState("");
