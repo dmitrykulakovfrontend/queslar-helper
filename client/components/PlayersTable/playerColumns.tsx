@@ -96,7 +96,7 @@ export const columns: ColumnDef<Player>[] = [
           break;
       }
       return (
-        <div className={`sticky left-0 ${color}`} title={dateString}>
+        <div className={`${color} w-max`} title={dateString}>
           {Math.floor(Math.max(days, 0)) + " days left"}
         </div>
       );
@@ -176,7 +176,7 @@ export const columns: ColumnDef<Player>[] = [
           break;
       }
       return (
-        <div className={`sticky  left-0 ${color}`} title={dateString}>
+        <div className={`${color} w-max`} title={dateString}>
           {Math.floor(Math.max(days, 0)) + " days left"}
         </div>
       );
