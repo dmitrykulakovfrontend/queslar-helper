@@ -4,6 +4,7 @@ import Logo from "../public/icons/ares.svg";
 import { IoMdClose } from "react-icons/io";
 import Image from "next/image";
 import { HiMenu, HiOutlineMenu, HiUserGroup } from "react-icons/hi";
+import Link from "next/link";
 
 type Props = {};
 
@@ -24,11 +25,14 @@ const Header = (props: Props) => {
           <HiMenu className="w-6 h-6" />
         )}
       </button>
-      <a href="#" className="text-xl font-bold flex items-center lg:ml-2.5">
+      <Link
+        href="/dashboard/general"
+        className="text-xl font-bold flex items-center lg:ml-2.5"
+      >
         <Image src={Logo} alt="" className="mr-2" width={32} height={32} />
 
         <span className="self-center whitespace-nowrap">Roman Empire</span>
-      </a>
+      </Link>
     </nav>
   );
 };
