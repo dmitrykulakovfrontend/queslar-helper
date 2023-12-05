@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { apiUrl } from "../constants";
 import { setCookie } from "cookies-next";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { useQuery } from "@tanstack/react-query";
 
 type Props = {};
 
@@ -16,27 +17,28 @@ export const getServerSideProps: GetServerSideProps<{}> = async ({ req }) => {
 };
 function Index({}: Props) {
   const [apiKey, setApiKey] = useState("");
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { data, error, isLoading, refetch, isFetching } = useQuery(
+    ["api"],
+    handleApiKey,
+    {
+      refetchOnWindowFocus: false,
+      enabled: false,
+    },
+  );
   const router = useRouter();
   async function handleApiKey() {
     try {
-      setIsLoading(true);
       const res = await fetch(`/api/${apiKey}`);
       console.log(res);
       if (res.status !== 200) {
         throw new Error(res.statusText);
       }
       router.push("/dashboard/general");
-      setIsLoading(false);
+      return await res.json();
     } catch (error) {
       console.error(error);
-      setIsError(true);
-      setTimeout(() => {
-        setIsError(false);
-      }, 5000);
-      setIsLoading(false);
       setApiKey("");
+      return error;
     }
   }
   return (
@@ -45,15 +47,17 @@ function Index({}: Props) {
         Welcome to Roman Empire!
       </span>
       {}
-      {isLoading ? (
+      {isFetching ? (
         <span className="text-2xl font-bold leading-none text-center text-gray-900 sm:text-3xl">
           Loading...
         </span>
-      ) : isError ? (
+      ) : error ? (
         <span className="text-xl font-bold leading-none text-gray-900 sm:text-1xl">
           You have entered incorrect api key or queslar server are not
           responding.
         </span>
+      ) : data ? (
+        "Success! You will be redirected soon"
       ) : (
         ""
       )}
@@ -64,7 +68,7 @@ function Index({}: Props) {
         placeholder="Enter api key"
       />
       <button
-        onClick={handleApiKey}
+        onClick={() => refetch()}
         className="flex items-center px-4 py-2 text-base font-normal text-gray-900 transition-all bg-white rounded-lg hover:bg-gray-100 group"
       >
         <span className="flex-1 whitespace-nowrap">Proceed</span>
