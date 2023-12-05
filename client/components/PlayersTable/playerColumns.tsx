@@ -15,11 +15,21 @@ import { Player } from "types/googleSheet";
 
 export const columns: ColumnDef<Player>[] = [
   {
+    accessorKey: "#",
+    enableHiding: false,
+    cell: ({ table, row }) => (
+      <div>
+        {table
+          .getSortedRowModel()
+          .rows.findIndex(
+            (sortedRow) => sortedRow.getValue("name") == row.getValue("name"),
+          ) + 1}
+      </div>
+    ),
+  },
+  {
     accessorKey: "name",
     enableHiding: false,
-    cell: ({ row }) => {
-      return <div className="sticky left-0">{row.getValue("name")}</div>;
-    },
   },
   {
     accessorKey: "Village_name",
@@ -29,15 +39,46 @@ export const columns: ColumnDef<Player>[] = [
   },
   {
     accessorKey: "actions_remaining",
+    cell: ({ row }) => {
+      const actionsLeft = +(row.getValue("actions_remaining") as string);
+      let color = "text-green-500";
+
+      switch (true) {
+        case actionsLeft > 100_000:
+          color = "text-green-500";
+          break;
+        case actionsLeft > 50_000:
+          color = "text-yellow-500";
+          break;
+        case actionsLeft >= 1_000:
+          color = "text-red-500";
+          break;
+
+        default:
+          color = "text-red-500";
+          break;
+      }
+      return <div className={`${color}`}>{actionsLeft || "#N/A"}</div>;
+    },
   },
   {
     accessorKey: "VIP time",
     cell: ({ row }) => {
-      const time =
-        new Date(row.getValue("VIP time")).getTime() - new Date().getTime();
+      const dateString = row.getValue("VIP time") as string;
+      const [month, day, year, hour, minute, second] =
+        dateString.split(/[\/ :]/);
+      const customDate = new Date(
+        +year,
+        +month - 1,
+        +day,
+        +hour,
+        +minute,
+        +second,
+      );
+
+      const time = customDate.getTime() - new Date().getTime();
 
       const days = time / (1000 * 3600 * 24);
-      console.log(row.getValue("name"), days, time);
       let color = "text-green-500";
       switch (true) {
         case days > 30:
@@ -55,20 +96,69 @@ export const columns: ColumnDef<Player>[] = [
           break;
       }
       return (
-        <div className={`sticky left-0 ${color}`}>
-          {row.getValue("VIP time")}
+        <div className={`sticky left-0 ${color}`} title={dateString}>
+          {Math.floor(Math.max(days, 0)) + " days left"}
         </div>
       );
+    },
+    sortingFn: (a, b) => {
+      if ((a.getValue("VIP time") as string).split(/[\/ :]/).length !== 6) {
+        return -1;
+      } else if (
+        (b.getValue("VIP time") as string).split(/[\/ :]/).length !== 6
+      ) {
+        return 1;
+      }
+      const [monthA, dayA, yearA, hourA, minuteA, secondA] = (
+        a.getValue("VIP time") as string
+      ).split(/[\/ :]/);
+      const [monthB, dayB, yearB, hourB, minuteB, secondB] = (
+        b.getValue("VIP time") as string
+      ).split(/[\/ :]/);
+
+      const customDateA = new Date(
+        +yearA,
+        +monthA - 1,
+        +dayA,
+        +hourA,
+        +minuteA,
+        +secondA,
+      );
+      const customDateB = new Date(
+        +yearB,
+        +monthB - 1,
+        +dayB,
+        +hourB,
+        +minuteB,
+        +secondB,
+      );
+
+      const timeA = customDateA.getTime();
+      const timeB = customDateB.getTime();
+
+      return timeA - timeB;
     },
   },
   {
     accessorKey: "QOL time",
     cell: ({ row }) => {
-      const time =
-        new Date(row.getValue("QOL time")).getTime() - new Date().getTime();
+      const dateString = row.getValue("QOL time") as string;
+      const [month, day, year, hour, minute, second] =
+        dateString.split(/[\/ :]/);
+      // year: number, monthIndex: number, date?: number | undefined, hours?: number | undefined, minutes?: number | undefined, seconds?: number | undefined, ms?: number | undefined
+      const customDate = new Date(
+        +year,
+        +month - 1,
+        +day,
+        +hour,
+        +minute,
+        +second,
+      );
+
+      const time = customDate.getTime() - new Date().getTime();
 
       const days = time / (1000 * 3600 * 24);
-      console.log(row.getValue("name"), days, time);
+
       let color = "text-green-500";
       switch (true) {
         case days > 30:
@@ -86,10 +176,47 @@ export const columns: ColumnDef<Player>[] = [
           break;
       }
       return (
-        <div className={`sticky left-0 ${color}`}>
-          {row.getValue("QOL time")}
+        <div className={`sticky  left-0 ${color}`} title={dateString}>
+          {Math.floor(Math.max(days, 0)) + " days left"}
         </div>
       );
+    },
+    sortingFn: (a, b) => {
+      if ((a.getValue("QOL time") as string).split(/[\/ :]/).length !== 6) {
+        return -1;
+      } else if (
+        (b.getValue("QOL time") as string).split(/[\/ :]/).length !== 6
+      ) {
+        return 1;
+      }
+      const [monthA, dayA, yearA, hourA, minuteA, secondA] = (
+        a.getValue("QOL time") as string
+      ).split(/[\/ :]/);
+      const [monthB, dayB, yearB, hourB, minuteB, secondB] = (
+        b.getValue("QOL time") as string
+      ).split(/[\/ :]/);
+
+      const customDateA = new Date(
+        +yearA,
+        +monthA - 1,
+        +dayA,
+        +hourA,
+        +minuteA,
+        +secondA,
+      );
+      const customDateB = new Date(
+        +yearB,
+        +monthB - 1,
+        +dayB,
+        +hourB,
+        +minuteB,
+        +secondB,
+      );
+
+      const timeA = customDateA.getTime();
+      const timeB = customDateB.getTime();
+
+      return timeA - timeB;
     },
   },
   {

@@ -2,77 +2,82 @@ import React from "react";
 import { SiReadthedocs } from "react-icons/si";
 import { useMenu } from "../providers/MenuContext";
 import { HiUserGroup } from "react-icons/hi";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 type Props = {};
 
 const Sidebar = (props: Props) => {
   const { menu, setMenu } = useMenu();
+  const router = useRouter();
   const sidebarNav = [
     {
       icon: HiUserGroup,
       name: "General",
       kingdomOnly: false,
+      href: "/dashboard/general",
     },
-    {
-      icon: HiUserGroup,
-      name: "Score",
-      kingdomOnly: true,
-    },
-    {
-      icon: HiUserGroup,
-      name: "Targets",
-      kingdomOnly: true,
-    },
-    {
-      icon: HiUserGroup,
-      name: "Catacombs",
-      kingdomOnly: false,
-    },
-    {
-      icon: HiUserGroup,
-      name: "Income",
-      kingdomOnly: false,
-    },
-    {
-      icon: HiUserGroup,
-      name: "Battle View",
-      kingdomOnly: true,
-    },
-    {
-      icon: HiUserGroup,
-      name: "House",
-      kingdomOnly: false,
-    },
-    {
-      icon: HiUserGroup,
-      name: "Battle Stats",
-      kingdomOnly: true,
-    },
-    {
-      icon: HiUserGroup,
-      name: "Partners",
-      kingdomOnly: false,
-    },
-    {
-      icon: HiUserGroup,
-      name: "Progress",
-      kingdomOnly: true,
-    },
-    {
-      icon: HiUserGroup,
-      name: "Homestead",
-      kingdomOnly: false,
-    },
-    {
-      icon: HiUserGroup,
-      name: "Fighters",
-      kingdomOnly: false,
-    },
-    {
-      icon: HiUserGroup,
-      name: "Dungeons",
-      kingdomOnly: false,
-    },
+    // {
+    //   icon: HiUserGroup,
+    //   name: "Score",
+    //   kingdomOnly: true,
+    // },
+    // {
+    //   icon: HiUserGroup,
+    //   name: "Targets",
+    //   kingdomOnly: true,
+    // },
+    // {
+    //   icon: HiUserGroup,
+    //   name: "Catacombs",
+    //   kingdomOnly: false,
+    // },
+    // {
+    //   icon: HiUserGroup,
+    //   name: "Income",
+    //   kingdomOnly: false,
+    // },
+    // {
+    //   icon: HiUserGroup,
+    //   name: "Battle View",
+    //   kingdomOnly: true,
+    // },
+    // {
+    //   icon: HiUserGroup,
+    //   name: "House",
+    //   kingdomOnly: false,
+    // },
+    // {
+    //   icon: HiUserGroup,
+    //   name: "Battle Stats",
+    //   kingdomOnly: true,
+    // },
+    // {
+    //   icon: HiUserGroup,
+    //   name: "Partners",
+    //   kingdomOnly: false,
+    // },
+    // {
+    //   icon: HiUserGroup,
+    //   name: "Progress",
+    //   kingdomOnly: true,
+    // },
+    // {
+    //   icon: HiUserGroup,
+    //   name: "Homestead",
+    //   kingdomOnly: false,
+    // },
+    // {
+    //   icon: HiUserGroup,
+    //   name: "Fighters",
+    //   kingdomOnly: false,
+    // },
+    // {
+    //   icon: HiUserGroup,
+    //   name: "Dungeons",
+    //   kingdomOnly: false,
+    // },
   ];
   return (
     <aside
@@ -92,13 +97,18 @@ const Sidebar = (props: Props) => {
       <ul className="pt-2 pb-2 space-y-2">
         {sidebarNav.map((link) => (
           <li key={link.name}>
-            <a
-              href="#"
-              className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 group"
+            <Link
+              href={link.href}
+              className={cn(
+                "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 group",
+                {
+                  "bg-gray-100": router.pathname === link.href,
+                },
+              )}
             >
               <link.icon className="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" />
               <span className="flex-1 ml-3 whitespace-nowrap">{link.name}</span>
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

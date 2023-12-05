@@ -29,7 +29,7 @@ import {
   DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
 import { SiCheckmarx } from "react-icons/si";
-import { Check } from "lucide-react";
+import { ArrowDown, ArrowUp, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Player } from "types/googleSheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -56,7 +56,6 @@ export function DataTable<TData, TValue>({
     "House Sink": false,
     "House Stove": false,
     "Target Enchant": false,
-    actions_remaining: false,
     G1_LH_enchant_boost: false,
     G2_RH_enchant_boost: false,
     G3_Head_enchant_boost: false,
@@ -128,18 +127,33 @@ export function DataTable<TData, TValue>({
       </div>
       <div className="w-full overflow-auto h-[70vh]">
         <Table className="bg-white border rounded-md ">
-          <TableHeader className="z-10">
+          <TableHeader className="sticky top-0 z-10 bg-gray-100 hover:cursor-pointer">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      onClick={() =>
+                        header.column.toggleSorting(
+                          !(header.column.getIsSorted() === "desc"),
+                        )
+                      }
+                      className="relative"
+                      key={header.id}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
                             header.getContext(),
                           )}
+                      {header.column.getIsSorted() === "asc" ? (
+                        <ArrowUp className="absolute top-0 -right-2" />
+                      ) : header.column.getIsSorted() === "desc" ? (
+                        <ArrowDown className="absolute top-0 -right-2" />
+                      ) : (
+                        ""
+                      )}
                     </TableHead>
                   );
                 })}

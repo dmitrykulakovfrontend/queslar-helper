@@ -1,10 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
-import Head from "next/head";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { HiMenu, HiOutlineMenu, HiUserGroup } from "react-icons/hi";
-import { SiReadthedocs } from "react-icons/si";
-import { useRouter } from "next/router";
 import { google } from "googleapis";
 import { DataTable } from "components/PlayersTable/DataTable";
 import { columns } from "components/PlayersTable/playerColumns";
@@ -44,7 +37,7 @@ export async function getServerSideProps({}) {
     },
   };
 }
-export default function Dashboard({ data }: { data: Player[] }) {
+export default function General({ data }: { data: Player[] }) {
   return (
     <div className="">
       {/* <button

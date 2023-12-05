@@ -16,7 +16,6 @@ export const inter = Inter({
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
-  const { menu, setMenu } = useMenu();
   const router = useRouter();
   if (router.pathname === "/") {
     return (
