@@ -18,7 +18,7 @@ export default async function handler(
     return res.status(500).json({ error: response.statusText });
   }
   const data = await response.json();
-  if (data.kingdom.overview[0][0].name !== "Roman Empire") {
+  if (data.kingdom.overview[0].name !== "Roman Empire") {
     return res.status(401).json({ error: "Not a roman" });
   }
 
